@@ -1,0 +1,22 @@
+name: Notify Discord on Push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  discord:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Discord Notification
+        uses: Ilshidur/action-discord@0.4.0
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        with:
+          args: |
+            **📦 Open-code-Studio/.github 有新的推送**
+            - 仓库: {{ EVENT_PAYLOAD.repository.full_name }}
+            - 提交者: {{ EVENT_PAYLOAD.pusher.name }}
+            - 提交信息: {{ EVENT_PAYLOAD.head_commit.message }}
+            - 查看详情: {{ EVENT_PAYLOAD.head_commit.url }}
